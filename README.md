@@ -1,6 +1,9 @@
 ## fastcampus-machine-learning-project
 
+[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fzzsza%2Ffastcampus-machine-learning-project)](https://hits.seeyoufarm.com)
+
 - Newyork Taxi Demand Prediction Project
+
 
 
 ```
