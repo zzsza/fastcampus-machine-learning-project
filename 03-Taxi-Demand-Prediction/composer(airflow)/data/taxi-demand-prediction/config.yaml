@@ -1,5 +1,5 @@
 local: &local
-  project: geultto
+  project: your_project
   jwt: your_key.json
   dataset: taxi_demand_local
   save_folder: .
@@ -8,7 +8,7 @@ development:
   <<: *local
 
 production:
-  project: geultto
+  project: your_project
   jwt: your_key.json
   dataset: taxi_demand_prod
   save_folder: /home/airflow/gcs/data/taxi-demand-prediction

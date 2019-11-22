@@ -1,5 +1,4 @@
 base_query = """
-
 WITH base_data AS 
 (
   SELECT nyc_taxi.*, gis.* EXCEPT (zip_code_geom)
@@ -32,7 +31,7 @@ WITH base_data AS
     EXTRACT(DAY FROM pickup_hour) AS day,
     CAST(format_datetime('%u', pickup_hour) AS INT64) -1 AS weekday,
     EXTRACT(HOUR FROM pickup_hour) AS hour,
-    CASE WHEN CAST(FORMAT_DATETIME('%u', pickup_hour) AS INT64) IN (5, 6) THEN 1 ELSE 0 END AS is_weekend
+    CASE WHEN CAST(FORMAT_DATETIME('%u', pickup_hour) AS INT64) IN (6, 7) THEN 1 ELSE 0 END AS is_weekend
   FROM distinct_zip_code  
   CROSS JOIN distinct_datetime
 ), agg_data AS (
@@ -54,6 +53,8 @@ WITH base_data AS
 )
 SELECT
   *,
+  LAG(cnt, 1) OVER(PARTITION BY zip_code ORDER BY pickup_hour) AS lag_1h_cnt,
+  LAG(cnt, 24) OVER(PARTITION BY zip_code ORDER BY pickup_hour) AS lag_1d_cnt,
   LAG(cnt, 168) OVER(PARTITION BY zip_code ORDER BY pickup_hour) AS lag_7d_cnt,
   LAG(cnt, 336) OVER(PARTITION BY zip_code ORDER BY pickup_hour) AS lag_14d_cnt,
   ROUND(AVG(cnt) OVER(PARTITION BY zip_code ORDER BY pickup_hour ROWS BETWEEN 168 PRECEDING AND 1 PRECEDING), 2) AS avg_14d_cnt,
@@ -62,5 +63,4 @@ SELECT
   CAST(STDDEV(cnt) OVER(PARTITION BY zip_code ORDER BY pickup_hour ROWS BETWEEN 336 PRECEDING AND 1 PRECEDING) AS INT64) AS std_21d_cnt
 FROM join_output
 order by zip_code, pickup_hour
-
 """

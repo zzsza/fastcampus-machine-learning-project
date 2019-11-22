@@ -28,6 +28,8 @@ base_df['zip_code_le'] = zip_code_le.fit_transform(base_df['zip_code'])
 
 # Split Train and Test Data
 # 지금은 고정값을 기준으로 Train / Test를 나누지만 실전에선 이 부분이 동적으로 설정되야 함(2015-01-24이 아닌)
+# 동적으로 하는 방법 : 나이브) 오늘 datetime_current => 이걸 주차별로 수정 ex) 월요일로 강제로 날짜를 치환 => 그 날짜 치환한 것에서 최근 1주만 가져와라
+# 2) 월요일 날짜 치환이 아니라, 그냥 today 기준 최근 1주를 test로
 train_df, test_df = split_train_and_test(base_df, '2015-01-24')
 print('data split end')
 
